@@ -9,8 +9,11 @@
 #import "EBFlipsideViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import <CoreBluetooth/CoreBluetooth.h>
+#import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface EBMainViewController : UIViewController <EBFlipsideViewControllerDelegate, UIPopoverControllerDelegate, CBPeripheralManagerDelegate>
+@interface EBMainViewController : UIViewController <EBFlipsideViewControllerDelegate, UIPopoverControllerDelegate, CBPeripheralManagerDelegate, MFMailComposeViewControllerDelegate>
 
 @property (strong, nonatomic) UIPopoverController *flipsidePopoverController;
 

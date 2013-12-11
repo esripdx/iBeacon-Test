@@ -91,10 +91,23 @@
 
 - (IBAction)uuidWasPressed:(UILongPressGestureRecognizer *)sender {
     if(sender.state == UIGestureRecognizerStateBegan) {
-        NSLog(@"%@", [EBAppDelegate getUUID]);
+        NSString *emailSubject = [NSString stringWithFormat:@"UUID for iOS Beacon \"%@\"", [UIDevice currentDevice].name];
+        NSString *messageBody = [NSString stringWithFormat:@"The UUID for \"%@\" is:\n\n%@\n\nMajor: %d\nMinor: %d", [UIDevice currentDevice].name, [EBAppDelegate getUUID], [EBAppDelegate majorValue], [EBAppDelegate minorValue]];
+        
+        MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+        mc.mailComposeDelegate = self;
+        [mc setSubject:emailSubject];
+        [mc setMessageBody:messageBody isHTML:NO];
+        
+        // Present mail view controller on screen
+        [self presentViewController:mc animated:YES completion:NULL];
     }
 }
 
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 
 #pragma mark - Beacon
 
