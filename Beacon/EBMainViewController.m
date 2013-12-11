@@ -82,11 +82,15 @@
 - (IBAction)majorValueWasChanged:(id)sender {
     self.majorField.text = [NSString stringWithFormat:@"%.0f", round(self.majorStepper.value)];
     [EBAppDelegate setMajorValue:(int)self.majorStepper.value];
+    [self initBeacon];
+    [self transmitBeacon];
 }
 
 - (IBAction)minorValueWasChanged:(id)sender {
     self.minorField.text = [NSString stringWithFormat:@"%.0f", round(self.minorStepper.value)];
     [EBAppDelegate setMinorValue:(int)self.minorStepper.value];
+    [self initBeacon];
+    [self transmitBeacon];
 }
 
 - (IBAction)uuidWasPressed:(UILongPressGestureRecognizer *)sender {
@@ -114,9 +118,9 @@
 - (void)initBeacon {
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:[EBAppDelegate getUUID]];
     self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid
-                                                                major:1
-                                                                minor:1
-                                                           identifier:@"com.esri.pdx.beacon"];
+                                                                major:[EBAppDelegate majorValue]
+                                                                minor:[EBAppDelegate minorValue]
+                                                           identifier:[UIDevice currentDevice].name];
 }
 
 - (void)transmitBeacon {
