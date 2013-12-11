@@ -12,4 +12,10 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
++ (NSString *)getUUID;
++ (void)setMajorValue:(NSInteger)value;
++ (void)setMinorValue:(NSInteger)value;
++ (NSInteger)majorValue;
++ (NSInteger)minorValue;
+
 @end

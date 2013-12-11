@@ -8,6 +8,10 @@
 
 #import "EBAppDelegate.h"
 
+static NSString *const EBUUIDDefaultsName = @"EBUUIDDefaultsName";
+static NSString *const EBMajorValueDefaultsName = @"EBMajorValueDefaultsName";
+static NSString *const EBMinorValueDefaultsName = @"EBMinorValueDefaultsName";
+
 @implementation EBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -42,5 +46,44 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark -
+
++ (NSString *)getUUID
+{
+    NSString *uuidString;
+    
+    if(!(uuidString = [[NSUserDefaults standardUserDefaults] stringForKey:EBUUIDDefaultsName])) {
+        CFUUIDRef newUniqueId = CFUUIDCreate(kCFAllocatorDefault);
+        uuidString = (__bridge_transfer NSString*)CFUUIDCreateString(kCFAllocatorDefault, newUniqueId);
+        CFRelease(newUniqueId);
+        [[NSUserDefaults standardUserDefaults] setObject:uuidString forKey:EBUUIDDefaultsName];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        NSLog(@"Generated new UUID: %@", uuidString);
+    } else {
+        NSLog(@"Returned stored UUID: %@", uuidString);
+    }
+    
+    return uuidString;
+}
+
++ (void)setMajorValue:(NSInteger)value {
+    [[NSUserDefaults standardUserDefaults] setInteger:value forKey:EBMajorValueDefaultsName];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (void)setMinorValue:(NSInteger)value {
+    [[NSUserDefaults standardUserDefaults] setInteger:value forKey:EBMinorValueDefaultsName];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSInteger)majorValue {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:EBMajorValueDefaultsName];
+}
+
++ (NSInteger)minorValue {
+    return [[NSUserDefaults standardUserDefaults] integerForKey:EBMinorValueDefaultsName];
+}
+
 
 @end
